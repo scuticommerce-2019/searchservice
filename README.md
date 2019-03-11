@@ -7,3 +7,14 @@ use docker on local env.
 //docker pull redislabs/redisearch
 
  docker run -p 6379:6379 redislabs/redisearch:latest
+
+
+To have launchd start kibana now and restart at login:
+  brew services start kibana
+Or, if you don't want/need a background service you can just run:
+  kibana
+  
+  To have launchd start elasticsearch now and restart at login:
+    brew services start elasticsearch
+  Or, if you don't want/need a background service you can just run:
+    elasticsearch

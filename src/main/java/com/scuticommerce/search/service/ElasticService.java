@@ -3,6 +3,8 @@ package com.scuticommerce.search.service;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.DocWriteResponse;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetRequest;
@@ -23,6 +25,9 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class ElasticService {
@@ -48,6 +53,44 @@ public class ElasticService {
 
         return request.source(payload, XContentType.JSON);
 
+    }
+
+    public IndexRequest createMapRequest(String index, String type, String id, Map<String, Object> jsonMap){
+
+        IndexRequest indexRequest = new IndexRequest(index, type, id).source(jsonMap);
+
+        return indexRequest;
+    }
+
+    public String batchCreate(String index, String type, String id, List<Map> products) {
+
+        BulkRequest request = new BulkRequest();
+
+        for (Map product : products) {
+
+            request.add(createMapRequest( index,  type,  product.get(id).toString(),  product));
+        }
+
+        try {
+
+            BulkResponse bulkResponse = getClient().bulk(request, RequestOptions.DEFAULT);
+
+            System.out.println(bulkResponse.toString());
+
+            if (bulkResponse.hasFailures()) {
+
+                System.out.println("Found failures ");
+            }
+
+            //close connection
+            getClient().close();
+
+            return bulkResponse.toString();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "OK";
     }
 
     public String writeDocument(String index, String type, String id, String payload){
@@ -156,5 +199,6 @@ public class ElasticService {
             }
         }
     }
+
 
 }

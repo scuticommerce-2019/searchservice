@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/search/")
@@ -45,6 +47,16 @@ public class SearchController {
                                         @RequestParam("id") String id, @RequestBody String payload){
 
         return new ResponseEntity<>(elasticService.writeDocument(name, type,id,payload), HttpStatus.OK);
+    }
+
+    @PostMapping("/batchindex")
+    public ResponseEntity<?> batchIndex(@RequestParam("indexName") String name, @RequestParam("type") String type,
+                                        @RequestParam("id") String id, @RequestBody List<Map> products){
+
+
+            elasticService.batchCreate(name, type,id.toString(),products);
+
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
     @GetMapping("/get")
