@@ -9,4 +9,4 @@ management:
           enabled: false
 name: Search Service version 1.0
 server:
-  port: 20193
+  port: 21911

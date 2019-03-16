@@ -1,6 +1,5 @@
 package com.scuticommerce.search.controller;
 
-import com.scuticommerce.search.model.SearchData;
 import com.scuticommerce.search.service.ElasticService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
