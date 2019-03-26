@@ -18,3 +18,7 @@ Or, if you don't want/need a background service you can just run:
     brew services start elasticsearch
   Or, if you don't want/need a background service you can just run:
     elasticsearch
+    
+ API doc
+ 
+ https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-document-index.html   

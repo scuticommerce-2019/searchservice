@@ -10,8 +10,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
-@RequestMapping(value = "/api/search/")
+@RequestMapping(value = "/api/searchservice/")
 public class SearchController {
 
     private static final String PRODUCT = "product";
@@ -46,16 +47,36 @@ public class SearchController {
         return new ResponseEntity<>(elasticService.getRequest(name, type,id), HttpStatus.OK);
     }
 
-    @GetMapping("/product")
+    @GetMapping("/products")
     public ResponseEntity<?> searchProduct() throws IOException {
 
         return new ResponseEntity<>(elasticService.search(PRODUCT), HttpStatus.OK);
     }
 
-    @GetMapping("/order")
+    @GetMapping("/orders")
     public ResponseEntity<?> searchOrder() throws IOException {
 
         return new ResponseEntity<>(elasticService.search(ORDER), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> search(@RequestParam String index, @RequestParam String field,
+                                    @RequestParam String text) throws IOException {
+
+        return new ResponseEntity<>(elasticService.searchQuery(index, field, text), HttpStatus.OK);
+    }
+
+    @GetMapping("/autosearch")
+    public ResponseEntity<?> autosearch(@RequestParam String index, @RequestParam String field,
+                                    @RequestParam String text) throws IOException {
+
+        return new ResponseEntity<>(elasticService.autoSearchQuery(index, field, text), HttpStatus.OK);
+    }
+
+    @GetMapping(value="/status")
+    public ResponseEntity<?> up(){
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
